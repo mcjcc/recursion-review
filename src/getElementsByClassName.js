@@ -6,37 +6,34 @@
 // But instead we're going to implement it from scratch:
 
 
-var getElementsByClassName = function(className) {
+var getElementsByClassName = function(className, node) {
   // your code here
 
   // base case
-  var body = document.body;
-
+  if (node === undefined) {
+    node = document.body;
+  }
   var classArray = [];
-
-  var getElements = function(element) {
     
-    // var list = Array.prototype.slice.call(element.classList, 0);
-    var foundName = false;
-    
-    if (element.classList !== undefined) {
-      for (var j = 0; j < element.classList.length; j++) {
-        if (className === element.classList[j]) {
-          foundName = true;
-        }      
-      }
+  // var list = Array.prototype.slice.call(element.classList, 0);
+  var foundName = false;
+  
+  if (node.classList !== undefined) {
+    for (var j = 0; j < node.classList.length; j++) {
+      if (className === node.classList[j]) {
+        foundName = true;
+      }      
     }
+  }
 
-    if (foundName === true) {
-      classArray.push(element);
-    }
-    
-    for (var i = 0; i < element.childNodes.length; i++) {
-      getElements(element.childNodes[i]);
-    }
-  };
+  if (foundName === true) {
+    classArray.push(node);
+  }
+  
+  for (var i = 0; i < node.childNodes.length; i++) {
+    classArray = classArray.concat(getElementsByClassName(className, node.childNodes[i]));
+  }
 
-  getElements(body);
   
   // returns an array with elements with class name
 
